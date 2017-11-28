@@ -50,4 +50,4 @@ colnames(dDemo) <- c("d.price","commercial", "lat", "long", "ng.hood")
 colnames(d311) <- c("inc.type", "lat", "long")
 colnames(dCrime) <- c("crm.type", "lat", "long")
 
-
+# round lat long to 5 sig figs
