@@ -44,4 +44,10 @@ str(dCrime)
 # remove date data
 rm(det311Date, detBlightDate, detCrimeDate, detDemDate)
 
-# 
+# rename columns 
+colnames(dBlight) <- c("lat", "long")
+colnames(dDemo) <- c("d.price","commercial", "lat", "long", "ng.hood")
+colnames(d311) <- c("inc.type", "lat", "long")
+colnames(dCrime) <- c("crm.type", "lat", "long")
+
+
