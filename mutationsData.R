@@ -29,11 +29,19 @@ dCrime <- cbind(dCrime, a)
 
 # group columns on location id and sum incidents
 temp.gr.311 <- d311[, 4:ncol(d311)] %>% group_by(loc.id) %>% summarise_all(funs(sum))
-temp.gr.Blight <- dBlight %>% group_by(loc.id) %>% count()
 temp.gr.Crime <- dCrime[, 4:ncol(dCrime)] %>% group_by(loc.id) %>% summarise_all(funs(sum))
+temp.gr.Blight <- dBlight %>% group_by(loc.id) %>% summarise(nBlight = n())
+
 # No id grouping results from demo data, consider removing next line (i.e. same as dDemo)
 temp.gr.Demo <- dDemo %>% select(loc.id, d.price) %>% group_by(loc.id) %>% summarise_all(funs(sum))
 
+# bind frequencies to temps
+c <- d311[, 4:ncol(d311)] %>% group_by(loc.id) %>% summarise(n311 = n())
+temp.gr.311 <- cbind(temp.gr.311, n311 = c$n311)
+
+c <- dCrime[, 4:ncol(dCrime)] %>% group_by(loc.id) %>% summarise(nCrime = n())
+temp.gr.Crime <- cbind(temp.gr.Crime, nCrime = c$nCrime)
+                                                                                           
 # create master list of unique loc.ids with lat and long from all dfs
 unique.loc <- d311 %>% select(loc.id, lat, long)
 unique.loc <- rbind(unique.loc, dBlight %>% select(loc.id, lat, long))
