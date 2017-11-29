@@ -45,9 +45,9 @@ temp.gr.Crime <- cbind(temp.gr.Crime, nCrime = c$nCrime)
 # create master list of unique loc.ids with lat and long from all dfs
 unique.loc <- d311 %>% select(loc.id, lat, long)
 unique.loc <- rbind(unique.loc, dBlight %>% select(loc.id, lat, long))
-unique.loc <- rbind(unique.loc, dCrime %>% select(loc.id, lat, long, ng.hood))
+unique.loc <- rbind(unique.loc, dCrime %>% select(loc.id, lat, long))
 unique.loc <- rbind(unique.loc, dDemo %>% select(loc.id, lat, long))
-unique.loc <- unique.loc %>% select(loc.id, lat, long, ng.hood) %>% group_by(loc.id, lat, long, ng.hood) %>% count()
+unique.loc <- unique.loc %>% select(loc.id, lat, long) %>% group_by(loc.id, lat, long) %>% count()
 
 # join all temp dataset columns to unique.loc - master list of unique incident locations.
 a <- merge(unique.loc[, -4], temp.gr.311, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
