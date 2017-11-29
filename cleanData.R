@@ -41,6 +41,12 @@ str(dDemo)
 str(d311)
 str(dCrime)
 
+summary(dBlight) # contains NA lats and longs that will need omission.
+summary(dDemo)
+summary(d311)
+summary(dCrime)
+
+
 # remove date data
 rm(det311Date, detBlightDate, detCrimeDate, detDemDate)
 
@@ -55,3 +61,6 @@ dBlight[,sapply(dBlight, is.numeric)] <- as.data.frame(sapply(dBlight[,sapply(dB
 dDemo[,sapply(dDemo, is.numeric)] <- as.data.frame(sapply(dDemo[,sapply(dDemo, is.numeric)], round, digits = 5))
 d311[,sapply(d311, is.numeric)] <- as.data.frame(sapply(d311[,sapply(d311, is.numeric)], round, digits = 5))
 dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrime, is.numeric)], round, digits = 5))
+
+# omit blight violations without gps lat and long
+dBlight <- na.omit(dBlight)
