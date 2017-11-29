@@ -51,3 +51,7 @@ colnames(d311) <- c("inc.type", "lat", "long")
 colnames(dCrime) <- c("crm.type", "lat", "long")
 
 # round lat long to 5 sig figs
+dBlight[,sapply(dBlight, is.numeric)] <- as.data.frame(sapply(dBlight[,sapply(dBlight, is.numeric)], round, digits = 5))
+dDemo[,sapply(dDemo, is.numeric)] <- as.data.frame(sapply(dDemo[,sapply(dDemo, is.numeric)], round, digits = 5))
+d311[,sapply(d311, is.numeric)] <- as.data.frame(sapply(d311[,sapply(d311, is.numeric)], round, digits = 5))
+dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrime, is.numeric)], round, digits = 5))
