@@ -2,6 +2,8 @@
 # 1. To limit scope of this activity - filter out incidents that happened before 1.1.17
 # 2. Strip out columns that are not necessary for this analysis
 
+# source("getDetroitData.R")
+
 library(dplyr)
 
 # Filter dates > 1/1/17
@@ -64,3 +66,5 @@ dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrim
 
 # omit blight violations without gps lat and long
 dBlight <- na.omit(dBlight)
+
+
