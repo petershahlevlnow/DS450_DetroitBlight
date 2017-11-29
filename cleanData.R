@@ -67,4 +67,11 @@ dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrim
 # omit blight violations without gps lat and long
 dBlight <- na.omit(dBlight)
 
+# change dDemo$d.price to numeric
+dDemo$d.price <- as.numeric(sub('$', "", as.character(dDemo$d.price), fixed = TRUE))
 
+# remove "DPW - " and " - DPW USE ONLY" from incident factors in d311
+a <- gsub("DPW - ", "", as.character(d311$inc.type))
+a <- gsub(" - DPW USE ONLY", "", as.character(a))
+a <- as.factor(a)
+d311$inc.type <- a
