@@ -50,15 +50,23 @@ unique.loc <- rbind(unique.loc, dDemo %>% select(loc.id, lat, long))
 unique.loc <- unique.loc %>% select(loc.id, lat, long) %>% group_by(loc.id, lat, long) %>% count()
 
 # join all temp dataset columns to unique.loc - master list of unique incident locations.
-a <- merge(unique.loc[, -4], temp.gr.311, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
+a <- merge(unique.loc, temp.gr.311, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
 a <- merge(a, temp.gr.Crime, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
 a <- merge(a, temp.gr.Demo, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
 a <- merge(a, temp.gr.Blight, by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
 
-
+# join neighborhood to locations
+d <- dCrime %>% select(ng.hood, loc.id) %>% group_by(ng.hood, loc.id) %>% count()
+a <- merge(a, d[, c("ng.hood", "loc.id")], by.x = "loc.id", by.y = "loc.id", all.x = TRUE)
+detAll <- a
 
 # clean up final data
 
 # rename columns
 
 # remove uncategorized crime incidents (lat = 32.... long = -127)
+
+# rm data that's not needed past this point
+rm(a, c, d, a_p, temp.gr.311, temp.gr.Blight, temp.gr.Crime, temp.gr.Demo, unique.loc)
+rm(d311, dBlight, dCrime, dDemo)
+rm(detCrime1909_1216)
