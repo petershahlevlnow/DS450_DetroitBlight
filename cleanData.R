@@ -31,18 +31,25 @@ detCrimeDate$Incident.Date...Time <- as.POSIXct(strptime(detCrimeDate$Incident.D
 detCrimeDate$Incident.Date <- as.Date(detCrimeDate$Incident.Date...Time)
 detCrimeDate <- detCrimeDate %>% filter(Incident.Date >= '2017-01-01')
 
-# Crime incidents pre 12/6/16
+# Crime incidents pre 12/6/16, note this was added later because once all data was merged
+# it was determined that blight violations didn't overlap with crime and 311 locations in 2017...
 detCrimeDate <- detCrime1909_1216
 detCrimeDate$Incident.Date...Time <- as.character(detCrimeDate$INCIDENTDATE)
 detCrimeDate$Incident.Date...Time <- as.POSIXct(strptime(detCrimeDate$Incident.Date...Time, "%m/%d/%Y %H:%M:%S %p"))
 detCrimeDate$Incident.Date <- as.Date(detCrimeDate$Incident.Date...Time)
 detCrimeDate <- detCrimeDate %>% filter(Incident.Date >= '2016-01-01' & Incident.Date < '2017-01-01')
 
+# Need to string split location in pre 12/6/17 crime data
+source("gpsParse.R")
+t.loc <- gpsParse(loc.txt = detCrimeDate$LOCATION)
+detCrimeDate$Latitude <- t.loc$lat
+detCrimeDate$Longitude <- t.loc$long
+
 # Remove columns that are not needed for analysis
 dBlight <- detBlightDate %>% select(Violation.Latitude, Violation.Longitude)
-dDemo <- detDemDate %>% select(Price, Commercial.Building, Latitude, Longitude, Neighborhood)
+dDemo <- detDemDate %>% select(Price, Commercial.Building, Latitude, Longitude)
 d311 <- det311Date %>% select(issue_type, lat, lng)
-dCrime <- detCrimeDate %>% select(Offense.Category, Latitude, Longitude)
+dCrime <- detCrimeDate %>% select(CATEGORY, NEIGHBORHOOD, Latitude, Longitude)
 
 # verify structures
 str(dBlight)
@@ -57,19 +64,21 @@ summary(dCrime)
 
 
 # remove date data
-rm(det311Date, detBlightDate, detCrimeDate, detDemDate)
+rm(det311Date, detBlightDate, detDemDate) #detCrimeDate
+# remove origin data -- only do this if sure
+rm(detCrime1909_1216, detCrime1216_pres, detDemolitions, detBlight, det311)
 
 # rename columns 
 colnames(dBlight) <- c("lat", "long")
-colnames(dDemo) <- c("d.price","commercial", "lat", "long", "ng.hood")
+colnames(dDemo) <- c("d.price","commercial", "lat", "long")
 colnames(d311) <- c("inc.type", "lat", "long")
-colnames(dCrime) <- c("crm.type", "lat", "long")
+colnames(dCrime) <- c("crm.type", "ng.hood", "lat", "long")
 
-# round lat long to 5 sig figs
-dBlight[,sapply(dBlight, is.numeric)] <- as.data.frame(sapply(dBlight[,sapply(dBlight, is.numeric)], round, digits = 5))
-dDemo[,sapply(dDemo, is.numeric)] <- as.data.frame(sapply(dDemo[,sapply(dDemo, is.numeric)], round, digits = 5))
-d311[,sapply(d311, is.numeric)] <- as.data.frame(sapply(d311[,sapply(d311, is.numeric)], round, digits = 5))
-dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrime, is.numeric)], round, digits = 5))
+# round lat long to 4 sig figs
+dBlight[,sapply(dBlight, is.numeric)] <- as.data.frame(sapply(dBlight[,sapply(dBlight, is.numeric)], round, digits = 4))
+dDemo[,sapply(dDemo, is.numeric)] <- as.data.frame(sapply(dDemo[,sapply(dDemo, is.numeric)], round, digits = 4))
+d311[,sapply(d311, is.numeric)] <- as.data.frame(sapply(d311[,sapply(d311, is.numeric)], round, digits = 4))
+dCrime[,sapply(dCrime, is.numeric)] <- as.data.frame(sapply(dCrime[,sapply(dCrime, is.numeric)], round, digits = 4))
 
 # omit blight violations without gps lat and long
 dBlight <- na.omit(dBlight)
