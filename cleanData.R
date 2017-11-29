@@ -15,21 +15,28 @@ detBlightDate <- detBlightDate %>% filter(Violation.Date >= '2017-01-01')
 # demolitions
 detDemDate <- detDemolitions
 detDemDate$Demolition.Date <- as.Date(detDemDate$Demolition.Date, "%m/%d/%Y")
-detDemDate <- detDemDate %>% filter(Demolition.Date >= '2017-01-01')
+detDemDate <- detDemDate %>% filter(Demolition.Date >= '2016-01-01' & Demolition.Date < '2017-01-01')
 
 # 311 incidents
 det311Date <- det311
 det311Date$ticket_created_date_time <- as.character(det311Date$ticket_created_date_time)
 det311Date$ticket_created_date_time <- as.POSIXct(strptime(det311Date$ticket_created_date_time, "%m/%d/%Y %H:%M:%S %p"))
 det311Date$ticket_created_date <- as.Date(det311Date$ticket_created_date_time)
-det311Date <- det311Date %>% filter(ticket_created_date >= '2017-01-01')
+det311Date <- det311Date %>% filter(ticket_created_date >= '2016-01-01' & ticket_created_date < '2017-01-01')
 
-# Crime incidents
+# Crime incidents post 12/6/16
 detCrimeDate <- detCrime1216_pres
 detCrimeDate$Incident.Date...Time <- as.character(detCrimeDate$Incident.Date...Time)
 detCrimeDate$Incident.Date...Time <- as.POSIXct(strptime(detCrimeDate$Incident.Date...Time, "%m/%d/%Y %H:%M:%S %p"))
 detCrimeDate$Incident.Date <- as.Date(detCrimeDate$Incident.Date...Time)
 detCrimeDate <- detCrimeDate %>% filter(Incident.Date >= '2017-01-01')
+
+# Crime incidents pre 12/6/16
+detCrimeDate <- detCrime1909_1216
+detCrimeDate$Incident.Date...Time <- as.character(detCrimeDate$INCIDENTDATE)
+detCrimeDate$Incident.Date...Time <- as.POSIXct(strptime(detCrimeDate$Incident.Date...Time, "%m/%d/%Y %H:%M:%S %p"))
+detCrimeDate$Incident.Date <- as.Date(detCrimeDate$Incident.Date...Time)
+detCrimeDate <- detCrimeDate %>% filter(Incident.Date >= '2016-01-01' & Incident.Date < '2017-01-01')
 
 # Remove columns that are not needed for analysis
 dBlight <- detBlightDate %>% select(Violation.Latitude, Violation.Longitude)

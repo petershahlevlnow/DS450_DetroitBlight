@@ -11,6 +11,11 @@ head(detCrime1216_pres)
 str(detCrime1216_pres)
 summary(detCrime1216_pres)
 
+# initial summary of data - Crime pre 12/6/16
+head(detCrime1909_1216)
+str(detCrime1909_1216)
+summary(detCrime1909_1216)
+
 # initial summary of data - Demolitions
 head(detDemolitions)
 str(detDemolitions)

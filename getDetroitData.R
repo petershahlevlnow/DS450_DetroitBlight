@@ -4,6 +4,9 @@
 # Detroit crime data from Dec 6th 2016 to present
 detCrime1216_pres <- read.csv("https://data.detroitmi.gov/api/views/6gdg-y3kf/rows.csv?accessType=DOWNLOAD")
 
+# Detroit crime data from Jan 1, 2009 to Dec 6th 2016
+detCrime1909_1216 <- read.csv("https://data.detroitmi.gov/api/views/invm-th67/rows.csv?accessType=DOWNLOAD&bom=true&format=true")
+
 # 311 issues submission from Dec 3rd 2014 to present
 det311 <- read.csv("https://data.detroitmi.gov/api/views/fwz3-w3yn/rows.csv?accessType=DOWNLOAD")
 
