@@ -77,6 +77,9 @@ a <- replace(a, a == "", "unknown")
 a <- as.factor(a)
 detAll$ng.hood <- a
 
+# add nDemo
+detAll <- detAll %>% mutate(nDemo = ifelse(commercial != "unknown", 1, 0))
+
 # remove whacky lats and longs
 detAll <- detAll %>% filter(lat <= 100 & lat >= 35)
 
