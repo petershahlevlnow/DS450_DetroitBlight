@@ -91,3 +91,24 @@ a <- gsub("DPW - ", "", as.character(d311$inc.type))
 a <- gsub(" - DPW USE ONLY", "", as.character(a))
 a <- as.factor(a)
 d311$inc.type <- a
+
+# keep raw data from 2016 on
+det311.2016 <- det311
+det311.2016$ticket_created_date_time <- as.character(det311.2016$ticket_created_date_time)
+det311.2016$ticket_created_date_time <- as.POSIXct(strptime(det311.2016$ticket_created_date_time, "%m/%d/%Y %H:%M:%S %p"))
+det311.2016$ticket_created_date <- as.Date(det311.2016$ticket_created_date_time)
+det311.2016 <- det311.2016 %>% filter(ticket_created_date >= '2016-01-01')
+
+detCrime.2017 <- detCrime1216_pres
+detCrime.2017 $Incident.Date...Time <- as.character(detCrime.2017 $Incident.Date...Time)
+detCrime.2017 $Incident.Date...Time <- as.POSIXct(strptime(detCrime.2017 $Incident.Date...Time, "%m/%d/%Y %H:%M:%S %p"))
+detCrime.2017 $Incident.Date <- as.Date(detCrime.2017 $Incident.Date...Time)
+detCrime.2017  <- detCrime.2017  %>% filter(Incident.Date >= '2016-12-01')
+
+detDem.2016 <- detDemolitions
+detDem.2016$Demolition.Date <- as.Date(detDem.2016$Demolition.Date, "%m/%d/%Y")
+detDem.2016 <- detDem.2016 %>% filter(Demolition.Date >= '2016-01-01')
+
+detBlight.2016 <- detBlight
+detBlight.2016$Violation.Date <- as.Date(detBlight.2016$Violation.Date, "%m/%d/%Y")
+detBlight.2016 <- detBlight.2016 %>% filter(Violation.Date >= '2016-01-01')

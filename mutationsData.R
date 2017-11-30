@@ -62,11 +62,27 @@ detAll <- a
 
 # clean up final data
 
-# rename columns
+# na's in numerics
+detAll <- detAll %>% mutate_if(is.numeric, funs(replace(., is.na(.), 0)))
 
-# remove uncategorized crime incidents (lat = 32.... long = -127)
+# deal with factors
+a <- as.character(detAll$commercial)
+a[is.na(a)] <- "unknown"
+a <- as.factor(a)
+detAll$commercial <- a
+
+a <- as.character(detAll$ng.hood)
+a[is.na(a)] <- "unknown"
+a <- replace(a, a == "", "unknown")
+a <- as.factor(a)
+detAll$ng.hood <- a
+
+# remove whacky lats and longs
+detAll <- detAll %>% filter(lat <= 100 & lat >= 35)
 
 # rm data that's not needed past this point
 rm(a, c, d, a_p, temp.gr.311, temp.gr.Blight, temp.gr.Crime, temp.gr.Demo, unique.loc)
 rm(d311, dBlight, dCrime, dDemo)
 rm(detCrime1909_1216)
+rm(detCrime1216_pres)
+
