@@ -65,4 +65,23 @@ detMap.den.blight <- ggmap(detMap) + stat_density2d(data = sample_n(melt.detAll 
 # detMap.den.blight
 
 grid.arrange(detMap.den.crime, detMap.den.311, detMap.den.demo, detMap.den.blight, nrow = 2, ncol = 2)
-rm(a)
+
+# correlation plot
+# is there a correlation between frequency of crime, 311, demos, and blight? 
+# There doesn't seem to be much correlation. 
+
+library(corrplot)
+
+cors <- cor(detAll %>% select(nCrime, n311, nDemo, nBlight), method = 'pearson')
+
+source('cormtest.R', echo=TRUE)
+corm <- cor.mtest.2(cors)
+
+# add cor.mtest for p.value matrix.... look in help
+
+corrplot(cors,  p.mat = corm[[1]], insig = "blank", method = "color",
+         addCoef.col="grey", 
+         order = "AOE", tl.cex = 0.8,
+         cl.cex = 1/par("cex"), addCoefasPercent = FALSE)
+
+
