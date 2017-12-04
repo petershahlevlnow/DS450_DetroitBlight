@@ -52,7 +52,7 @@ print(paste("AUC=", auc@y.values[[1]], sep=""))
 #                     verbose = FALSE)
 
 mod.train <- model.matrix(blight ~ . -1, data = detAll.train.trim)
-logit.reg <- cv.glmnet(mod.train, detAll.train.trim$blight, nfolds = 3, family = "binomial", nlambda = 20, alpha = 0.5)
+logit.reg <- cv.glmnet(mod.train, detAll.train.trim$blight, nfolds = 10, family = "binomial", nlambda = 20, alpha = 0.5)
 
 
 logit.reg.pred <- predict(logit.reg, model.matrix(blight ~. -1, detAll.test.trim))
@@ -154,3 +154,5 @@ plot(prf)
 
 auc <- performance(pred, "auc")
 print(paste("AUC=", auc@y.values[[1]], sep=""))
+
+
